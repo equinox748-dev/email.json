@@ -1,15 +1,22 @@
-name: Email Step Demo
+name: CI with Cache
 
 on:
   push:
-    branches: [ main ]   # Trigger on push to main branch
+    branches:
+      - main
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
 
-      - name: 22f3002868@ds.study.iitm.ac.in
-        run: echo "Hello, world!"
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: cache-40f0a16
+
+      - name: prime-cache-40f0a16
+        run: echo "Cache step result: ${{ steps.cache.outputs.cache-hit }}"
